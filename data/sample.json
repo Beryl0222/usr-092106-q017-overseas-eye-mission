@@ -1,0 +1,9 @@
+{
+  "event_id": "092106-017-sample-001",
+  "event_type": "PATIENT_REGISTERED",
+  "aggregate_type": "patient_case",
+  "aggregate_id": "overseas_eye_mission-001",
+  "occurred_at": "2026-09-20T15:00:00+08:00",
+  "version": 1,
+  "summary": "登记海外光明行任务台的首条领域记录"
+}

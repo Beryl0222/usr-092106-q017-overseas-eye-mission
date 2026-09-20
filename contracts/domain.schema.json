@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "海外光明行任务台领域事件",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "aggregate_type",
+    "aggregate_id",
+    "occurred_at",
+    "version",
+    "summary"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "PATIENT_REGISTERED",
+        "SCREENING_REVIEWED",
+        "CONSENT_SIGNED",
+        "TREATMENT_COMPLETED",
+        "HANDOFF_ACCEPTED"
+      ]
+    },
+    "aggregate_type": {
+      "type": "string",
+      "enum": [
+        "patient_case",
+        "screening_result",
+        "treatment_slot",
+        "followup_handoff"
+      ]
+    },
+    "aggregate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}
