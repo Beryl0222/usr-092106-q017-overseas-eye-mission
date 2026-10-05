@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "海外光明行任务台领域事件",
+  "description": "只追加的领域事件信封。事件一经接收，event_id/aggregate_id/occurred_at/version 不得原地改写；业务更正必须产生后继事件。AI 设备输出只是辅助证据，诊断与手术资格以医生签署事件为准。各 event_type 的必需 payload 字段见 enumDescriptions / examples，权威定义在 src/events.py 的 PAYLOAD_SPEC。",
   "type": "object",
   "required": [
     "event_id",
@@ -9,7 +10,8 @@
     "aggregate_id",
     "occurred_at",
     "version",
-    "summary"
+    "summary",
+    "payload"
   ],
   "properties": {
     "event_id": {
@@ -20,10 +22,23 @@
       "type": "string",
       "enum": [
         "PATIENT_REGISTERED",
+        "IDENTITY_MERGED",
+        "IDENTITY_MERGE_REVERTED",
+        "SCREENING_RECORDED",
         "SCREENING_REVIEWED",
         "CONSENT_SIGNED",
+        "PRIORITY_SET",
+        "RESOURCE_LEDGER_UPDATED",
+        "TEAM_SHIFT_DECLARED",
+        "SLOT_RESERVED",
+        "SLOT_RELEASED",
+        "URGENT_ADDON_REQUESTED",
+        "URGENT_ADDON_DECIDED",
+        "TREATMENT_PLANNED",
         "TREATMENT_COMPLETED",
-        "HANDOFF_ACCEPTED"
+        "HANDOFF_ACCEPTED",
+        "FOLLOWUP_SCHEDULED",
+        "REVIEW_EXPORT_AUTHORIZED"
       ]
     },
     "aggregate_type": {
@@ -31,8 +46,13 @@
       "enum": [
         "patient_case",
         "screening_result",
+        "consent",
         "treatment_slot",
-        "followup_handoff"
+        "resource_ledger",
+        "team_roster",
+        "identity_merge",
+        "followup_handoff",
+        "mission_review"
       ]
     },
     "aggregate_id": {
@@ -50,6 +70,24 @@
     "summary": {
       "type": "string",
       "minLength": 1
+    },
+    "payload": {
+      "type": "object",
+      "description": "事件业务字段，按 event_type 不同；必需字段以 PATIENT_REGISTERED 为例：local_patient_id, display_name。完整约束见 src/events.py:PAYLOAD_SPEC 与 src/validator.py。"
+    },
+    "request_id": {
+      "type": ["string", "null"],
+      "description": "客户端请求标识；同一聚合流内相同 request_id 的重传只返回首次事件，不重复消耗名额。"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["online", "offline"],
+      "default": "online"
+    },
+    "captured_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "离线采集时间；归并批次按 (captured_at, occurred_at, event_id) 排序续版本。"
     }
   },
   "additionalProperties": true

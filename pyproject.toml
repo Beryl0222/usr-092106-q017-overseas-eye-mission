@@ -1,5 +1,5 @@
 [project]
 name = "overseas-eye-mission"
 version = "0.1.0"
-description = "领域事件基础校验"
+description = "海外光明行任务台：事件溯源的筛查、排程、接续与复盘后端"
 requires-python = ">=3.11"
